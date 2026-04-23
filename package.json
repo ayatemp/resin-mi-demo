@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "train": "node scripts/train-polymer-model.mjs",
+    "train:v2": "node scripts/train-polymer-v2.mjs",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

@@ -1,97 +1,45 @@
 # Resin MI Demo
 
-公開ポリマーTgデータから軽量な Materials Informatics モデルを学習し、要求特性から候補樹脂を探索するWebデモです。
+公開ポリマーデータから軽量な Materials Informatics モデルを学習し、要求特性から候補樹脂を探索するWebデモです。
 
-## Data
+## Live Demo
 
-- Source: PolyMetriX curated glass transition temperature dataset on Zenodo
-- Rows used: generated into `src/data/polymerModel.json` by `npm run train`
-- Model: PSMILES token features + ridge regression + nearest-neighbor blending
+- Main demo: https://resin-mi-demo.vercel.app/
+- Guide: https://resin-mi-demo.vercel.app/guide
+- Learned multi-property demo: https://resin-mi-demo.vercel.app/demo-v2
+- Alias: https://resin-mi-demo.vercel.app/demo_ver2
 
-This is a demonstration for resin material selection workflows. Tg is learned from public data; density, modulus, heat resistance, flow, and CAE-fit indicators are derived heuristics for demo use.
+## What Is Learned
+
+### demo v1
+
+- 学習値: Tg（ガラス転移温度）
+- データ: PolyMetriX curated glass transition temperature dataset
+- モデル: PSMILES token features + ridge regression + nearest-neighbor blending
+- 注意: 弾性率、密度、耐薬品性、成形性、CAE指標はデモ用の推定値です。
+
+### demo v2
+
+- 学習値: Tg、密度、誘電率、HSE band gap、原子化エネルギー
+- Tgデータ: PolyMetriX curated glass transition temperature dataset
+- 複数物性データ: Polymer Genome JSON data
+- モデル: PSMILES / 組成特徴量 + ridge regression
+- 注意: CAE readiness、thermal risk、electrical risk、mass penaltyは、学習済み物性から計算する二次スクリーニングです。CAE解析そのものの学習モデルではありません。
+
+Current V2 held-out metrics are stored in `src/data/polymerModelV2.json`.
 
 ## Commands
 
 ```bash
 npm install
 npm run train
+npm run train:v2
 npm run build
 npm run dev
 ```
 
-## Guide
+`npm run train:v2` downloads public source data into `.cache/`, trains the demo models, and regenerates `src/data/polymerModelV2.json`.
 
-The deployed app has a usage guide at `/guide`.
+## Notes
 
-- Local: `http://localhost:5173/guide`
-- Production: `https://resin-mi-demo.vercel.app/guide`
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+This is a portfolio/demo implementation for resin material selection workflows. Real material development should validate predictions against in-house measurements, supplier datasheets, and CAE results before decision-making.

@@ -1,3 +1,7 @@
 {
-  "rewrites": [{ "source": "/guide", "destination": "/" }]
+  "rewrites": [
+    { "source": "/guide", "destination": "/" },
+    { "source": "/demo-v2", "destination": "/" },
+    { "source": "/demo_ver2", "destination": "/" }
+  ]
 }
