@@ -19,6 +19,13 @@ npm run build
 npm run dev
 ```
 
+## Guide
+
+The deployed app has a usage guide at `/guide`.
+
+- Local: `http://localhost:5173/guide`
+- Production: `https://resin-mi-demo.vercel.app/guide`
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)

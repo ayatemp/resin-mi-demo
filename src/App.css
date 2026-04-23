@@ -459,10 +459,131 @@ code {
   opacity: 0.66;
 }
 
+.guidePage {
+  background: var(--surface);
+}
+
+.guideHero {
+  padding: 44px clamp(20px, 7vw, 96px) 36px;
+  background:
+    linear-gradient(135deg, rgba(36, 116, 98, 0.1), transparent 46%),
+    linear-gradient(0deg, rgba(243, 246, 238, 0.92), rgba(255, 254, 250, 1));
+  border-bottom: 1px solid var(--line);
+}
+
+.guideHero h1 {
+  margin-top: 18px;
+  font-size: 54px;
+}
+
+.guideHero > p:last-child {
+  max-width: 760px;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-bottom: 34px;
+  color: var(--green-strong);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.guideGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+}
+
+.guideBlock {
+  padding: 30px clamp(20px, 4vw, 48px);
+  background: var(--surface);
+}
+
+.guideBlock.wide {
+  grid-column: 1 / -1;
+}
+
+.guideBlock h2 {
+  margin-bottom: 16px;
+}
+
+.guideBlock p,
+.guideBlock li,
+.definitionList dd {
+  color: var(--muted);
+  line-height: 1.72;
+}
+
+.guideBlock ul {
+  margin: 14px 0 0;
+  padding-left: 1.2em;
+}
+
+.sampleCandidate {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) 210px;
+  align-items: center;
+  gap: 12px;
+  max-width: 860px;
+  min-height: 82px;
+  margin: 18px 0 22px;
+  padding: 10px;
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  background: #f0f8f1;
+}
+
+.definitionList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+.definitionList div,
+.guideCallout {
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+}
+
+.definitionList dt {
+  margin-bottom: 6px;
+  color: var(--ink);
+  font-weight: 800;
+}
+
+.definitionList dd {
+  margin: 0;
+}
+
+.guideCallout {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: var(--green-strong);
+}
+
+.guideCallout p {
+  margin: 0;
+}
+
 @media (max-width: 1120px) {
   .heroBand,
   .workspace,
-  .modelPanel {
+  .modelPanel,
+  .guideGrid,
+  .definitionList {
     grid-template-columns: 1fr;
   }
 
@@ -485,6 +606,10 @@ code {
     line-height: 1.12;
   }
 
+  .guideHero h1 {
+    font-size: 36px;
+  }
+
   .controlPanel,
   .resultsPanel,
   .detailPanel {
@@ -496,6 +621,14 @@ code {
   }
 
   .candidateProps {
+    grid-column: 1 / -1;
+  }
+
+  .sampleCandidate {
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+
+  .sampleCandidate .candidateProps {
     grid-column: 1 / -1;
   }
 

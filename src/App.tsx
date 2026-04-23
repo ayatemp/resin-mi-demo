@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react'
 import {
   Atom,
+  ArrowLeft,
   Beaker,
+  BookOpen,
   Boxes,
   CircuitBoard,
   FlaskConical,
@@ -9,6 +11,7 @@ import {
   Search,
   SlidersHorizontal,
   Sparkles,
+  Thermometer,
 } from 'lucide-react'
 import './App.css'
 import { Histogram, MoleculeField, ScatterPlot } from './components/Charts'
@@ -119,7 +122,129 @@ function PropertyBar({ label, value, max, unit }: { label: string; value: number
   )
 }
 
-function App() {
+function GuidePage() {
+  return (
+    <main className="guidePage">
+      <section className="guideHero">
+        <a className="backLink" href="/">
+          <ArrowLeft size={16} />
+          デモに戻る
+        </a>
+        <p className="eyebrow">
+          <BookOpen size={16} />
+          How to read this demo
+        </p>
+        <h1>樹脂MIデモの見方</h1>
+        <p>
+          このページは、候補材料に表示される数値と、左側の要求特性、右側の選定根拠が何を意味しているかを説明する補助ページです。
+        </p>
+      </section>
+
+      <section className="guideGrid">
+        <article className="guideBlock wide">
+          <h2>候補材料の1行に出てくる数値</h2>
+          <div className="sampleCandidate" aria-label="candidate row example">
+            <span className="score">99</span>
+            <span className="candidateMain">
+              <strong>Polyimines</strong>
+              <small>[*]CCN([*])C(=O)C12CC3CC(CC(C3)C1)C2</small>
+            </span>
+            <span className="candidateProps">
+              <b>140C</b>
+              <b>4.46GPa</b>
+              <b>1.08</b>
+            </span>
+          </div>
+          <dl className="definitionList">
+            <div>
+              <dt>左の丸い数値</dt>
+              <dd>
+                要求特性との適合スコアです。100に近いほど、左側で指定した目標Tg、弾性率、密度、耐薬品性、成形しやすさに合っています。
+              </dd>
+            </div>
+            <div>
+              <dt>材料クラス</dt>
+              <dd>Polyimides、Polyesters、Polysiloxanes などのポリマー分類です。個別の商品名ではありません。</dd>
+            </div>
+            <div>
+              <dt>PSMILES</dt>
+              <dd>ポリマーの繰り返し単位を表す文字列です。構造式の代わりに、AIが特徴量化するための入力として使っています。</dd>
+            </div>
+            <div>
+              <dt>140C</dt>
+              <dd>
+                予測Tg、つまりガラス転移温度の予測値です。公開Tgデータで学習したモデルの出力を摂氏で表示しています。
+              </dd>
+            </div>
+            <div>
+              <dt>4.46GPa</dt>
+              <dd>弾性率の目安です。Tgと構造特徴からデモ用に推定した値で、CAEの剛性評価に渡す前の仮置き値です。</dd>
+            </div>
+            <div>
+              <dt>1.08</dt>
+              <dd>密度の目安です。単位は g/cm3 です。候補行ではスペース節約のため数値だけ表示しています。</dd>
+            </div>
+          </dl>
+        </article>
+
+        <article className="guideBlock">
+          <h2>左側の要求特性</h2>
+          <p>
+            顧客や部材側から要求される条件です。スライダーを動かすと、候補材料のスコアと順位が変わります。用途ボタンによって、熱、剛性、軽量性、成形性の重みも変えています。
+          </p>
+          <ul>
+            <li>目標Tg: 耐熱性の中心になる温度条件</li>
+            <li>弾性率下限: 剛性として最低限ほしい値</li>
+            <li>密度上限: 軽量化のために超えたくない値</li>
+            <li>耐薬品性: 0から100のデモ指標</li>
+            <li>成形しやすさ: 0から100のデモ指標</li>
+          </ul>
+        </article>
+
+        <article className="guideBlock">
+          <h2>右側の選定根拠</h2>
+          <p>
+            候補材料をクリックすると、その材料の詳しい値が表示されます。棒グラフは、候補がどの物性で強いかをざっくり見るためのものです。
+          </p>
+          <ul>
+            <li>Tg: モデルで予測したガラス転移温度</li>
+            <li>弾性率: 構造特徴から推定した剛性目安</li>
+            <li>耐薬品性: ヘテロ原子、ハロゲン、Tgなどから作ったデモ指標</li>
+            <li>成形しやすさ: 高Tgや芳香族量が増えると下がりやすいデモ指標</li>
+          </ul>
+        </article>
+
+        <article className="guideBlock">
+          <h2>CAE連携目安</h2>
+          <p>
+            実際のCAE解析ではありません。材料候補をCAEに渡す前に、熱余裕、反りリスク、たわみリスクを見積もるための疑似指標です。
+          </p>
+          <ul>
+            <li>fit: CAE投入候補としての総合目安</li>
+            <li>thermal margin: HDT目安と目標Tgの差</li>
+            <li>warp risk: 反りや成形不安定さの目安</li>
+            <li>deflection risk: 剛性不足によるたわみリスクの目安</li>
+          </ul>
+        </article>
+
+        <article className="guideBlock">
+          <h2>学習している値と推定値</h2>
+          <div className="guideCallout">
+            <Thermometer size={18} />
+            <p>
+              Tgは公開データから学習しています。弾性率、密度、耐薬品性、成形性、CAE指標は、TgとPSMILES構造特徴から作ったデモ用の推定値です。
+            </p>
+          </div>
+          <p>
+            つまり、このデモは「蓄積データとMIで候補材料を絞り込む体験」を再現するものです。実材料開発で使う場合は、社内実測データやCAE実測結果で追加学習・検証する必要があります。
+          </p>
+        </article>
+      </section>
+    </main>
+  )
+}
+
+function MainDemo() {
   const [targets, setTargets] = useState<Targets>({
     tgC: 140,
     modulus: 2.8,
@@ -311,6 +436,10 @@ function App() {
       </section>
     </main>
   )
+}
+
+function App() {
+  return window.location.pathname === '/guide' ? <GuidePage /> : <MainDemo />
 }
 
 export default App
